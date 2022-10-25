@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+{%load static%}
+    <div>
+        <h4>{{ project.pavadinimas }}</h4>
+
+        {% if project.cover %}
+          <img src="{{ project.cover.url }}" style="width: 300px; height:300px" class="card-img-top" alt="...">
+        {% else %}
+          <img src="{% static '/img/noimg.png' %}" class="card-img-top" style="width: 300px; height:300px">
+        {% endif %}
+        <h5>Klientas: {{project.klientas}}</h5>
+        <h5>Projecto vadovas: {{project.vadovas}}</h5>
+        <h5>Projekto pradžia: {{project.pradzios_data}} </h5>
+        <h5>Numatyta projekto pabaiga: {{project.pabaigos_data}}</h5>
+        {% if project.aprasymas %}
+        <h5>Aprašymas:<br>{{ project.aprasymas | safe }}</h5>
+        {% endif %}
+        </br>
+        <h5>Darbuotojai:</h5>
+        {% for darbuotojas in project.darbuotojai.all %}
+        <ul>
+            <li>{{darbuotojas.vardas}} {{darbuotojas.pavarde}}</li>
+        </ul>
+        {% endfor %}
+        <br>
+        <h5>Sąskaitos:</h5>
+
+
+    </div>
+{% endblock %}
