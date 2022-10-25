@@ -7,7 +7,7 @@ from django.core.paginator import Paginator
 from .models import Projektas, Klientas, Darbuotojai, Darbas, Saskaita
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
-
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     projektu_kiekis = Projektas.objects.all().count()
@@ -24,7 +24,7 @@ def index(request):
 
 
 def projects(request):
-    paginator = Paginator(Projektas.objects.all(), 1)
+    paginator = Paginator(Projektas.objects.all(), 4)
     page_number = request.GET.get('page')
     paged_projects = paginator.get_page(page_number)
     projektai = Projektas.objects.all()
@@ -78,15 +78,19 @@ def register(request):
             return redirect('register')
     return render(request, 'register.html')
 
-
+@login_required
 def UsersProjects(request):
     paginator = Paginator(Projektas.objects.all(), 2)
     page_number = request.GET.get('page')
     paged_projects = paginator.get_page(page_number)
     projektai = Projektas.objects.filter(vadovas=request.user).order_by('pavadinimas').all()
+
+    #
+    # def get_queryset(self):
+    #     return Projektas.objects.filter(vadovas=self.request.user).order_by('pavadinimas')
+    #
+    # projektai = Projektas.objects.get_queryset()
     context = {
         'projektai': paged_projects
     }
     return render(request, 'user_projects.html', context=context)
-    # def get_queryset(self):
-    #     return Projektas.objects.filter(vadovas=self.request.user).order_by('pavadinimas')

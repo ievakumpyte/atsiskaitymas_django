@@ -83,8 +83,6 @@ class Projektas(models.Model):
     cover = models.ImageField("Cover", upload_to='covers', null=True, blank=True)
     aprasymas = HTMLField(blank=True, null=True)
 
-
-
     class Meta:
         verbose_name = 'Projektas'
         verbose_name_plural = 'Projektai'
