@@ -1,12 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
+{%load static%}
+    <h1>Mano projektai</h1>
 
-
-{% load static %}
-    <h1>Visi projektai</h1>
-    <br>
-    {% if projektai %}
+     {% if projektai %}
     <div class="row">
       {% for proj in projektai %}
         <div class="col-md-4 d-flex align-items-stretch">
@@ -18,7 +16,7 @@
             {% endif %}
             <div class="card-body">
               <h6 class="card-subtitle mb-2 text-muted"></h6>
-              <p class="card-text"><a href="{{ proj.id }}">{{ proj.pavadinimas }}</a></p>
+              <p class="card-text"><a href="{% url 'project' proj.pk %}">{{ proj.pavadinimas }}</a></p>
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from tinymce.models import HTMLField
-
+from django.urls import reverse
 # Create your models here.
 
 
@@ -21,6 +21,7 @@ class Klientas(models.Model):
 
 
 class Darbuotojai(models.Model):
+    prisijungimas = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     vardas = models.CharField("Vardas", max_length=100)
     pavarde = models.CharField("Pavardė", max_length=100)
     pareigos = models.CharField("Pareigos", max_length=100)
@@ -81,6 +82,7 @@ class Projektas(models.Model):
 
     cover = models.ImageField("Cover", upload_to='covers', null=True, blank=True)
     aprasymas = HTMLField(blank=True, null=True)
+
 
 
     class Meta:

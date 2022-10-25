@@ -11,7 +11,7 @@ class SaskaitaInstanceInline(admin.TabularInline):
 class ProjektasAdmin(admin.ModelAdmin):
     list_display = ('pavadinimas', 'klientas', 'display_darbuotojai','pradzios_data','pabaigos_data')
     # list_editable = ('pradzios_data','pabaigos_data')
-
+    list_filter = ('vadovas',)
     search_fields = ('id', 'pavadinimas')
     inlines = [SaskaitaInstanceInline]
 

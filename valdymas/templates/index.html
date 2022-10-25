@@ -1,7 +1,20 @@
 {% extends "base.html" %}
-
+{% load i18n %}
 {% block content %}
 
-<h5>Pradinis puslapis</h5>
+<style>
+    li{
+    font-size:18px
+    }
+</style>
+  <h5>Šiuo metu įmonėje:</h5>
+<br>
+  <ul>
+    <li><strong>{{ projektu_kiekis }}</strong> projektai</li>
+    <li><strong>{{ darbuotoju_kiekis }} </strong> darbuotojai</li>
+    <li><strong>{{ klientu_kiekis }} </strong> klientai</li>
+
+  </ul>
+
 
 {% endblock %}

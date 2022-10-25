@@ -5,10 +5,22 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
 from django.core.paginator import Paginator
 from .models import Projektas, Klientas, Darbuotojai, Darbas, Saskaita
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import generic
+
 
 def index(request):
+    projektu_kiekis = Projektas.objects.all().count()
+    darbuotoju_kiekis = Darbuotojai.objects.all().count()
+    klientu_kiekis = Klientas.objects.all().count()
 
-    return render(request, 'index.html')
+
+    context = {
+        'projektu_kiekis': projektu_kiekis,
+        'darbuotoju_kiekis': darbuotoju_kiekis,
+        'klientu_kiekis': klientu_kiekis,
+    }
+    return render(request, 'index.html', context=context)
 
 
 def projects(request):
@@ -21,6 +33,7 @@ def projects(request):
     }
     return render(request, 'projektai.html', context=context)
 
+
 def project(request, project_id):
     single_project = get_object_or_404(Projektas, pk=project_id)
     saskaitos = Saskaita.objects.filter(projektas=project_id)
@@ -31,12 +44,16 @@ def project(request, project_id):
 
     return render(request, 'projektas.html', context=context)
 
+
 @csrf_protect
 def register(request):
     if request.method == "POST":
         # pasiimame reikšmes iš registracijos formos
         username = request.POST['username']
         email = request.POST['email']
+        name = request.POST['name']
+        job = request.POST['job']
+        surname = request.POST['surname']
         password = request.POST['password']
         password2 = request.POST['password2']
         # tikriname, ar sutampa slaptažodžiai
@@ -52,10 +69,24 @@ def register(request):
                     return redirect('register')
                 else:
                     # jeigu viskas tvarkoje, sukuriame naują vartotoją
-                    User.objects.create_user(username=username, email=email, password=password)
+                    User.objects.create_user(username=username, email=email, password=password, first_name=name,
+                                             last_name=surname)
                     messages.info(request, f'Vartotojas {username} užregistruotas!')
                     return redirect('login')
         else:
             messages.error(request, 'Slaptažodžiai nesutampa!')
             return redirect('register')
     return render(request, 'register.html')
+
+
+def UsersProjects(request):
+    paginator = Paginator(Projektas.objects.all(), 2)
+    page_number = request.GET.get('page')
+    paged_projects = paginator.get_page(page_number)
+    projektai = Projektas.objects.filter(vadovas=request.user).order_by('pavadinimas').all()
+    context = {
+        'projektai': paged_projects
+    }
+    return render(request, 'user_projects.html', context=context)
+    # def get_queryset(self):
+    #     return Projektas.objects.filter(vadovas=self.request.user).order_by('pavadinimas')
