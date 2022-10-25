@@ -26,6 +26,21 @@
         {% endfor %}
         <br>
         <h5>Sąskaitos:</h5>
+        {% for saskaita in sask.all %}
+        <ul>
+            <li>Išrašymo data: {{saskaita.israsymo_data}} Suma: {{saskaita.suma}}</li>
+
+        </ul>
+        {% endfor %}
+
+        <h5>Darbai:</h5>
+        {% for darbas in project.darbai.all %}
+        <ul>
+            <li><strong>{{darbas.pavadinimas}}</strong> Būsena: <p style="display: inline-block" class="{% if copy.status == 'a' %}text-success{% else %}text-warning{% endif %}">{{darbas.get_status_display}}</p></li>
+            <p>Pastabos: {{darbas.pastabos}}</p>
+
+        </ul>
+        {% endfor %}
 
 
     </div>

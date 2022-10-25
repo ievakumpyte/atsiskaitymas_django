@@ -37,6 +37,7 @@ class Darbas(models.Model):
     pavadinimas = models.CharField("Pavadinimas", max_length=100)
     pastabos = models.CharField("Pastabos", max_length=100, null=True, blank=True)
 
+
     BUSENOS_STATUS = (
         ('a', 'atlikta'),
         ('n', 'nepradeta'),
@@ -44,7 +45,7 @@ class Darbas(models.Model):
 
     )
 
-    busena = models.CharField("Busena", max_length=100, choices=BUSENOS_STATUS, null=True, blank=True)
+    status = models.CharField("Busena", max_length=100, choices=BUSENOS_STATUS, null=True, blank=True)
 
 
 
@@ -58,6 +59,7 @@ class Darbas(models.Model):
 class Saskaita(models.Model):
     israsymo_data = models.DateField("Data", null=True, blank=True)
     suma = models.FloatField("Suma", null=True, blank=True)
+    projektas = models.ForeignKey("Projektas", on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Sąskaita'
@@ -74,10 +76,10 @@ class Projektas(models.Model):
     pabaigos_data = models.DateField("Pabaigos data",null=True, blank=True)
     klientas = models.ForeignKey("Klientas",  on_delete=models.SET_NULL, null=True)
     vadovas = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    darbuotojai = models.ManyToManyField(Darbuotojai)
-    darbai = models.ForeignKey("Darbas", on_delete=models.SET_NULL, null=True, blank=True)
-    saskaitos = models.ForeignKey("Saskaita", on_delete=models.SET_NULL, null=True, blank=True)
-    cover = models.ImageField("Cover", upload_to='covers', null=True)
+    darbuotojai = models.ManyToManyField(Darbuotojai,blank=True)
+    darbai = models.ManyToManyField(Darbas,blank=True)
+
+    cover = models.ImageField("Cover", upload_to='covers', null=True, blank=True)
     aprasymas = HTMLField(blank=True, null=True)
 
 
@@ -93,5 +95,6 @@ class Projektas(models.Model):
 
     def display_darbuotojai(self):
         return ', '.join((darbuotojai.vardas and darbuotojai.pavarde) for darbuotojai in self.darbuotojai.all())
+
 
     display_darbuotojai.short_description = 'Darbuotojai'

@@ -23,9 +23,10 @@ def projects(request):
 
 def project(request, project_id):
     single_project = get_object_or_404(Projektas, pk=project_id)
-
+    saskaitos = Saskaita.objects.filter(projektas=project_id)
     context = {
-        'project': single_project
+        'project': single_project,
+        'sask': saskaitos
     }
 
     return render(request, 'projektas.html', context=context)
