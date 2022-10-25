@@ -21,7 +21,7 @@ class Klientas(models.Model):
 
 
 class Darbuotojai(models.Model):
-    prisijungimas = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+
     vardas = models.CharField("Vardas", max_length=100)
     pavarde = models.CharField("Pavardė", max_length=100)
     pareigos = models.CharField("Pareigos", max_length=100)
