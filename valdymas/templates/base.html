@@ -42,7 +42,7 @@
               </svg>
             {{ user.get_username }}</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'my-projects' %}">Mano Projektai</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'logout'%}?next=/projektai">Atsijungti</a></li>
+            <li class="nav-item"><a class="nav-link" style="float:right" href="{% url 'logout'%}?next=/projektai">Atsijungti</a></li>
           {% else %}
             <li class="nav-item"><a class="nav-link" href="{% url 'login'%}?next={{request.path}}">Prisijungti</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'register'%}">Registruotis</a></li>

@@ -35,9 +35,11 @@
             <a href="?page={{ page_obj.previous_page_number }}">atgal</a>
         {% endif %}
 
+        {% if page_obj %}
         <span class="current">
             {{ page_obj.number }} iš {{ page_obj.paginator.num_pages }}
         </span>
+        {% endif %}
 
         {% if page_obj.has_next %}
             <a href="?page={{ page_obj.next_page_number }}">pirmyn</a>

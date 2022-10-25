@@ -10,22 +10,23 @@
         {% else %}
           <img src="{% static '/img/noimg.png' %}" class="card-img-top" style="width: 300px; height:300px">
         {% endif %}
-        <h5>Klientas: {{projektas.klientas}}</h5>
-        <h5>projektaso vadovas: {{projektas.vadovas}}</h5>
-        <h5>Projekto pradžia: {{projektas.pradzios_data}} </h5>
-        <h5>Numatyta projekto pabaiga: {{projektas.pabaigos_data}}</h5>
+        <h6>Klientas: {{projektas.klientas}}</h6>
+        <h6>Projekto vadovas: {{projektas.vadovas}}</h6>
+        <h6>Projekto pradžia: {{projektas.pradzios_data}} </h6>
+        <h6>Numatyta projekto pabaiga: {{projektas.pabaigos_data}}</h6>
         {% if projektas.aprasymas %}
-        <h5>Aprašymas:<br>{{ projektas.aprasymas | safe }}</h5>
+        <br>
+        <h6>Aprašymas:</h6><p>{{ projektas.aprasymas | safe }}</p>
         {% endif %}
         </br>
-        <h5>Darbuotojai:</h5>
+        <h6>Darbuotojai:</h6>
         {% for darbuotojas in projektas.darbuotojai.all %}
         <ul>
-            <li>{{darbuotojas.vardas}} {{darbuotojas.pavarde}}</li>
+            <li><strong>{{darbuotojas.vardas}} {{darbuotojas.pavarde}}</strong> {{darbuotojas.pareigos}}</li>
         </ul>
         {% endfor %}
         <br>
-        <h5>Sąskaitos:</h5>
+        <h6>Sąskaitos:</h6>
         {% for saskaita in sask.all %}
         <ul>
             <li>Išrašymo data: {{saskaita.israsymo_data}} Suma: {{saskaita.suma}}</li>
@@ -33,12 +34,15 @@
         </ul>
         {% endfor %}
 
-        <h5>Darbai:</h5>
+        <h6>Darbai:</h6>
         {% for darbas in projektas.darbai.all %}
         <ul>
             <li><strong>{{darbas.pavadinimas}}</strong> Būsena: <p style="display: inline-block" class="{% if copy.status == 'a' %}text-success{% else %}text-warning{% endif %}">{{darbas.get_status_display}}</p></li>
+            {% if darbas.pastabos %}
             <p>Pastabos: {{darbas.pastabos}}</p>
-
+            {% else %}
+            <p>Pastabų nėra</p>
+            {% endif %}
         </ul>
         {% endfor %}
 
