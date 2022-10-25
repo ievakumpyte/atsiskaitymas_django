@@ -3,23 +3,23 @@
 {% block content %}
 {%load static%}
     <div>
-        <h4>{{ project.pavadinimas }}</h4>
+        <h4>{{ projektas.pavadinimas }}</h4>
 
-        {% if project.cover %}
-          <img src="{{ project.cover.url }}" style="width: 300px; height:300px" class="card-img-top" alt="...">
+        {% if projektas.cover %}
+          <img src="{{ projektas.cover.url }}" style="width: 300px; height:300px" class="card-img-top" alt="...">
         {% else %}
           <img src="{% static '/img/noimg.png' %}" class="card-img-top" style="width: 300px; height:300px">
         {% endif %}
-        <h5>Klientas: {{project.klientas}}</h5>
-        <h5>Projecto vadovas: {{project.vadovas}}</h5>
-        <h5>Projekto pradžia: {{project.pradzios_data}} </h5>
-        <h5>Numatyta projekto pabaiga: {{project.pabaigos_data}}</h5>
-        {% if project.aprasymas %}
-        <h5>Aprašymas:<br>{{ project.aprasymas | safe }}</h5>
+        <h5>Klientas: {{projektas.klientas}}</h5>
+        <h5>projektaso vadovas: {{projektas.vadovas}}</h5>
+        <h5>Projekto pradžia: {{projektas.pradzios_data}} </h5>
+        <h5>Numatyta projekto pabaiga: {{projektas.pabaigos_data}}</h5>
+        {% if projektas.aprasymas %}
+        <h5>Aprašymas:<br>{{ projektas.aprasymas | safe }}</h5>
         {% endif %}
         </br>
         <h5>Darbuotojai:</h5>
-        {% for darbuotojas in project.darbuotojai.all %}
+        {% for darbuotojas in projektas.darbuotojai.all %}
         <ul>
             <li>{{darbuotojas.vardas}} {{darbuotojas.pavarde}}</li>
         </ul>
@@ -34,7 +34,7 @@
         {% endfor %}
 
         <h5>Darbai:</h5>
-        {% for darbas in project.darbai.all %}
+        {% for darbas in projektas.darbai.all %}
         <ul>
             <li><strong>{{darbas.pavadinimas}}</strong> Būsena: <p style="display: inline-block" class="{% if copy.status == 'a' %}text-success{% else %}text-warning{% endif %}">{{darbas.get_status_display}}</p></li>
             <p>Pastabos: {{darbas.pastabos}}</p>

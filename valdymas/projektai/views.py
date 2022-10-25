@@ -23,27 +23,36 @@ def index(request):
     return render(request, 'index.html', context=context)
 
 
-def projects(request):
-    paginator = Paginator(Projektas.objects.all(), 4)
-    page_number = request.GET.get('page')
-    paged_projects = paginator.get_page(page_number)
-    projektai = Projektas.objects.all()
-    context = {
-        'projektai': paged_projects
-    }
-    return render(request, 'projektai.html', context=context)
+# def projects(request):
+#     paginator = Paginator(Projektas.objects.all(), 4)
+#     page_number = request.GET.get('page')
+#     paged_projects = paginator.get_page(page_number)
+#     projektai = Projektas.objects.all()
+#     context = {
+#         'projektai': paged_projects
+#     }
+#     return render(request, 'projektai.html', context=context)
+class ProjektasListView(generic.ListView):
+    model = Projektas
+    paginate_by = 3
+    template_name = 'projektai.html'
 
 
-def project(request, project_id):
-    single_project = get_object_or_404(Projektas, pk=project_id)
-    saskaitos = Saskaita.objects.filter(projektas=project_id)
-    context = {
-        'project': single_project,
-        'sask': saskaitos
-    }
+# def project(request, project_id):
+#     single_project = get_object_or_404(Projektas, pk=project_id)
+#     saskaitos = Saskaita.objects.filter(projektas=project_id)
+#     context = {
+#         'project': single_project,
+#         'sask': saskaitos
+#     }
+#
+#     return render(request, 'projektas.html', context=context)
+class ProjectDetailView(generic.DetailView):
+    model = Projektas
+    template_name = 'projektas.html'
 
-    return render(request, 'projektas.html', context=context)
-
+    def get_success_url(self):
+        return reverse('project-detail', kwargs={'pk': self.object.id})
 
 @csrf_protect
 def register(request):
@@ -78,19 +87,27 @@ def register(request):
             return redirect('register')
     return render(request, 'register.html')
 
-@login_required
-def UsersProjects(request):
-    paginator = Paginator(Projektas.objects.all(), 2)
-    page_number = request.GET.get('page')
-    paged_projects = paginator.get_page(page_number)
-    projektai = Projektas.objects.filter(vadovas=request.user).order_by('pavadinimas').all()
+# @login_required
+# def UsersProjects(request):
+#     paginator = Paginator(Projektas.objects.all(), 2)
+#     page_number = request.GET.get('page')
+#     paged_projects = paginator.get_page(page_number)
+#     projektai = Projektas.objects.filter(vadovas=request.user).order_by('pavadinimas')
+#
+#     #
+#     # def get_queryset(self):
+#     #     return Projektas.objects.filter(vadovas=self.request.user).order_by('pavadinimas')
+#     #
+#     # projektai = Projektas.objects.get_queryset()
+#     context = {
+#         'projektai': paged_projects
+#     }
+#     return render(request, 'user_projects.html', context=context)
 
-    #
-    # def get_queryset(self):
-    #     return Projektas.objects.filter(vadovas=self.request.user).order_by('pavadinimas')
-    #
-    # projektai = Projektas.objects.get_queryset()
-    context = {
-        'projektai': paged_projects
-    }
-    return render(request, 'user_projects.html', context=context)
+class UserProjectsListView(LoginRequiredMixin, generic.ListView):
+    model = Projektas
+    template_name = 'user_projects.html'
+    paginate_by = 4
+
+    def get_queryset(self):
+        return Projektas.objects.filter(vadovas=self.request.user).order_by('pavadinimas')
