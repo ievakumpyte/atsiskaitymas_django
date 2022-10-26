@@ -2,6 +2,32 @@
 
 {% block content %}
 {%load static%}
+<style>
+   .pagination {
+  display: inline-block;
+  width:100%
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+.test:not(.nohover):hover {
+        border: 1px solid #0814bf;
+      }
+</style>
     <h1>Mano projektai</h1>
 
      {% if projektas_list %}
@@ -10,9 +36,9 @@
         <div class="col-md-4 d-flex align-items-stretch">
           <div class="card mb-4 shadow-sm">
             {% if proj.cover %}
-              <img src="{{ proj.cover.url }}" class="card-img-top" alt="..." style="width: 300px; height:300px">
+              <a href="{% url 'project-detail' proj.pk %}"> <img src="{{ proj.cover.url }}" class="card-img-top" alt="..." style="width: 300px; height:300px"></a>
             {% else %}
-              <img src="{% static '/img/noimg.png' %}" class="card-img-top" style="width: 300px; height:300px">
+              <a href="{% url 'project-detail' proj.pk %}"> <img src="{% static '/img/noimg.png' %}" class="card-img-top" style="width: 300px; height:300px"></a>
             {% endif %}
             <div class="card-body">
               <h6 class="card-subtitle mb-2 text-muted"></h6>
@@ -26,21 +52,36 @@
       <p>Projektų nėra.</p>
     {% endif %}
 
+<div class="text-center">
   <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; pirmas</a>
-            <a href="?page={{ page_obj.previous_page_number }}">atgal</a>
+            <a href="?page=1">&laquo; </a>
+            <a href="?page={{ page_obj.previous_page_number }}"> < </a>
         {% endif %}
+
+<!--        {% if page_obj %}-->
+<!--        <span class="current">-->
+<!--            {{ page_obj.number }} iš {{ page_obj.paginator.num_pages }}-->
+<!--        </span>-->
+<!--        {% endif %}-->
         {% if page_obj %}
-        <span class="current">
-            {{ page_obj.number }} iš {{ page_obj.paginator.num_pages }}
-        </span>
-        {% endif %}
+        {% for num in page_obj.paginator.page_range%}
+        {% if num == page_obj.number %}
+        <a class="active">{{num}}</a>
+
+        {%endif%}
+        {%endfor%}
+        {%endif%}
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">pirmyn</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">paskutinis &raquo;</a>
+            <a href="?page={{ page_obj.next_page_number }}"> >  </a>
+            <a href="?page={{ page_obj.paginator.num_pages }}"> &raquo;</a>
         {% endif %}
     </span>
+<!--      <div>-->
+<!--            {{ page_obj.number }} iš {{ page_obj.paginator.num_pages }}-->
+<!--        </div>-->
+</div>
+</div>
 </div>
 {% endblock %}

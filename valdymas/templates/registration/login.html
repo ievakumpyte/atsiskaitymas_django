@@ -1,6 +1,37 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+
+.center {
+
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+td, th {
+
+  padding: 8px;
+  text-align: center;
+}
+input[type=submit]{
+  background-color: #04AA6D;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;;
+  background-color: #04AA6D;
+  color: white;
+}
+</style>
 
   {% if form.errors %}
     <p>Prisijungimo klaida, bandykite dar kartą!</p>

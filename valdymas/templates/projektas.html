@@ -2,7 +2,46 @@
 
 {% block content %}
 {%load static%}
-    <div>
+<style>
+img{
+text-align: center;
+  border: 3px solid green;
+}
+table{
+width: 100%;
+padding: 8px;
+}
+
+.center {
+
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+tr:nth-child(even){background-color: #f2f2f2;}
+
+tr:hover {background-color: #ddd;}
+tr{background-color: #ddd;}
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;;
+  background-color: #04AA6D;
+  color: white;
+}
+h5{
+padding:8px;
+
+}
+</style>
+    <div class="center" >
+
         <h4>{{ projektas.pavadinimas }}</h4>
 
         {% if projektas.cover %}
@@ -10,42 +49,74 @@
         {% else %}
           <img src="{% static '/img/noimg.png' %}" class="card-img-top" style="width: 300px; height:300px">
         {% endif %}
-        <h6>Klientas: {{projektas.klientas}}</h6>
-        <h6>Projekto vadovas: {{projektas.vadovas}}</h6>
-        <h6>Projekto pradžia: {{projektas.pradzios_data}} </h6>
-        <h6>Numatyta projekto pabaiga: {{projektas.pabaigos_data}}</h6>
+
+<h5>Bendra informacija</h5>
+        <table class="center">
+            <tr>
+                <th>Klientas</th>
+                <th>Projekto vadovas</th>
+                <th>Projekto pradžia</th>
+                <th>Numatyta projekto pabaiga</th>
+            </tr>
+
+            <tr>
+                <td>{{projektas.klientas}}</td>
+                <td>{{projektas.vadovas}}</td>
+                <td>{{projektas.pradzios_data}}</td>
+                <td>{{projektas.pabaigos_data}}</td>
+            </tr>
+        </table>
+
+        <br>
+<br>
         {% if projektas.aprasymas %}
         <br>
-        <h6>Aprašymas:</h6><p>{{ projektas.aprasymas | safe }}</p>
+        <h5>Aprašymas</h5>
+        <tr>
+        {{ projektas.aprasymas | safe }}</tr>
         {% endif %}
         </br>
-        <h6>Darbuotojai:</h6>
-        {% for darbuotojas in projektas.darbuotojai.all %}
-        <ul>
-            <li><strong>{{darbuotojas.vardas}} {{darbuotojas.pavarde}}</strong> {{darbuotojas.pareigos}}</li>
-        </ul>
-        {% endfor %}
+
+
+<h5>Darbuotojai</h5>
+        <table class="center">
+            <tr>
+                <th>Vardas</th>
+                <th>Pavardė</th>
+                <th>Pareigos</th>
+            </tr>
+            {% for darbuotojas in projektas.darbuotojai.all %}
+
+            <tr>
+                <td>{{darbuotojas.vardas}}</td>
+                <td>{{darbuotojas.pavarde}}</td>
+                <td>{{darbuotojas.pareigos}}</td>
+            </tr>
+                {% endfor %}
+        </table>
+<br>
+<br>
+<h5>Darbai</h5>
+
+        <table class="center">
+            <tr>
+                <th>Pavadinimas</th>
+                <th>Pastabos</th>
+                <th>Būsena</th>
+            </tr>
+            {% for darbas in projektas.darbai.all %}
+
+            <tr>
+                <td>{{darbas.pavadinimas}}</td>
+                {% if darbas.pastabos %}
+                <td>{{darbas.pastabos}}</td>
+                {% else %}
+                <td>-</td>
+                {% endif %}
+                <td class="{% if darbas.status == 'a' %}text-success{% endif %}">{{darbas.get_status_display}}</td>
+            </tr>
+                {% endfor %}
+        </table>
         <br>
-        <h6>Sąskaitos:</h6>
-        {% for saskaita in sask.all %}
-        <ul>
-            <li>Išrašymo data: {{saskaita.israsymo_data}} Suma: {{saskaita.suma}}</li>
-
-        </ul>
-        {% endfor %}
-
-        <h6>Darbai:</h6>
-        {% for darbas in projektas.darbai.all %}
-        <ul>
-            <li><strong>{{darbas.pavadinimas}}</strong> Būsena: <p style="display: inline-block" class="{% if copy.status == 'a' %}text-success{% else %}text-warning{% endif %}">{{darbas.get_status_display}}</p></li>
-            {% if darbas.pastabos %}
-            <p>Pastabos: {{darbas.pastabos}}</p>
-            {% else %}
-            <p>Pastabų nėra</p>
-            {% endif %}
-        </ul>
-        {% endfor %}
-
-
     </div>
 {% endblock %}

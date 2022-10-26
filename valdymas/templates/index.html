@@ -6,15 +6,55 @@
     li{
     font-size:18px
     }
+
+    table{
+width: 100%;
+padding: 8px;
+}
+
+.center {
+
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+tr:nth-child(even){background-color: #f2f2f2;}
+
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;;
+  background-color: #04AA6D;
+  color: white;
+}
 </style>
-  <h5>Šiuo metu įmonėje:</h5>
+{% if user.is_authenticated %}
+{%else%}
+<div class="jumbotron text-center">
+  <h1>Sveiki,</h1>
+  <p>Norėdami matyti savo projektus prisijunkite</p>
+</div>
+{% endif %}
+  <h5 class="text-center">Šiuo metu įmonėje</h5>
 <br>
-  <ul>
-    <li>{{ projektu_kiekis }} projektai</li>
-    <li>{{ darbuotoju_kiekis }}  darbuotojų</li>
-    <li>{{ klientu_kiekis }} klientai</li>
 
-  </ul>
-
+<table class="center">
+            <tr>
+                <th>Projektai</th>
+                <th>Darbuotojai</th>
+                <th>Klientai</th>
+            </tr>
+            <tr>
+                <td>{{ projektu_kiekis }}</td>
+                <td>{{ darbuotoju_kiekis }}</td>
+                <td>{{ klientu_kiekis }}</td>
+            </tr>
+        </table>
 
 {% endblock %}
